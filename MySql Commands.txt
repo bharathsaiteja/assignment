@@ -1,0 +1,394 @@
+
+DDL:	
+	Create  Table
+		Desc Table
+
+	Alter Table
+		Add Column
+		Modify Table
+		Rename Table		
+	Truncate Table
+	Drop Table
+
+
+
+
+
+*************
+CREATE TABLE:
+*************
+mysql> CREATE TABLE Employee (
+       Id INT,
+       Name VARCHAR(45),
+       Department VARCHAR(45),
+       Salary FLOAT,
+       Gender VARCHAR(45),
+       Age INT,
+       City VARCHAR(45));
+Query OK, 0 rows affected (0.17 sec)
+
+*************
+ALTER TABLE:
+*************
+
+ADD COLUMN:
+***********
+mysql> ALTER TABLE Employee ADD PINCODE INT(6);
+
+
+mysql> DESC Employee;
+
+DROP COLUMN:
+************
+
+mysql> ALTER TABLE EMPLOYEE DROP PINCODE;
+
+mysql> DESC EMPLOYEE;
+
+
+MODIFY COLUMN:
+**************
+
+mysql> ALTER TABLE EMPLOYEE MODIFY Name Varchar(65);
+
+mysql> DESC EMPLOYEE;
+
+
+RENAME TABLE:
+*************
+
+mysql> RENAME TABLE EMPLOYEE TO EMP;
+
+mysql> show tables;
+
+mysql> RENAME TABLE EMP TO EMPLOYEE;
+
+
+
+###########################################################
+DML:	
+
+	Insert
+	Select
+	Udpdate
+	Delete
+###########################################################
+
+
+INSERT:
+*******
+mysql> INSERT INTO Employee (Id, `Name`, Department, Salary, Gender, Age, City) VALUES (1001, 'John Doe', 'IT', 35000, 'Male', 25, 'London');
+
+mysql> INSERT INTO EMPLOYEE VALUES (1002, 'Mary Smith', 'HR', 45000, 'Female', 27, 'London');
+
+
+SELECT:
+*******
+
+mysql> SELECT * FROM EMPLOYEE;
+mysql> SELECT ID, NAME, DEPARTMENT, CITY FROM EMPLOYEE;
+mysql> SELECT ID, NAME FROM EMPLOYEE WHERE (AGE<=26);
+
+UPDATE
+*********
+
+mysql>  UPDATE EMPLOYEE SET DEPARTMENT='IT' 
+	WHERE 
+	AGE>26 
+	AND 
+	GENDER='FEMALE';
+
+
+DELETE
+*********
+mysql> INSERT INTO EMPLOYEE VALUES (1111, 'DELETE NAME', 'IT', 35000, 'Female', 25, 'London');
+mysql> DELETE FROM EMPLOYEE WHERE ID=1111;
+
+
+
+
+
+
+
+
+
+employee_id | first_name | last_name | email                      | hire_date  | PINCODE |
++-------------+------------+-----------+----------------------------+------------+---------+
+|           1 | John       | Doe       | john.doe@example.com       | 2021-01-15 |   12345 |
+|           2 | Jane       | Smith     | jane.smith@example.com     | 2020-11-20 |   54321 |
+|           3 | Bob        | Johnson   | bob.johnson@example.com    | 2022-03-10 |   67890 |
+|           4 | Alice      | Williams  | alice.williams@example.com | 2019-08-05 |   98765
+
+-- Update the PINCODE for employees
+UPDATE employees
+SET PINCODE = '12345'
+WHERE employee_id = 1;  -- You can change the WHERE condition as needed
+
+
+
+-- Update the PINCODE for all employees
+UPDATE employees
+SET PINCODE = '12345';
+
+
+
+-- Update the PINCODE for employees
+UPDATE employees
+SET PINCODE = '12345'
+WHERE employee_id = 1;
+
+UPDATE employees
+SET PINCODE = '54321'
+WHERE employee_id = 2;
+
+UPDATE employees
+SET PINCODE = '67890'
+WHERE employee_id = 3;
+
+UPDATE employees
+SET PINCODE = '98765'
+WHERE employee_id = 4;
+
+
+
+-- Drop (set to NULL) the PINCODE for Jane (employee_id = 2)
+UPDATE employees
+SET PINCODE = NULL
+WHERE employee_id = 2;
+
+
+-- Rename "Bob" to "Lokesh"
+UPDATE employees
+SET first_name = 'Lokesh'
+WHERE employee_id = 3;
+
+-- Update the PINCODE for a specific employee (employee_id = 1)
+UPDATE employees
+SET PINCODE = '1904'
+WHERE employee_id = 1;
+
+
+-- Delete the employee named Bob
+DELETE FROM employees
+WHERE first_name = 'Bob' AND last_name = 'Johnson';
+
+
+-- Delete the email address for the employee named Bob
+UPDATE employees
+SET email = NULL
+WHERE first_name = 'Bob' AND last_name = 'Johnson';
+/
+/
+/
+CREATE TABLE employees (
+    employee_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    hire_date DATE DEFAULT '2023-01-01'
+);
+
+
+In this table:
+
+employee_id is the primary key.
+first_name and last_name are marked as NOT NULL.
+email is marked as UNIQUE.
+hire_date has a DEFAULT value of '2023-01-01'.
+/
+/
+/
+CREATE TABLE departments (
+    department_id INT AUTO_INCREMENT PRIMARY KEY,
+    department_name VARCHAR(100) NOT NULL
+);
+In this table:
+
+department_id is the primary key.
+department_name is marked as NOT NULL
+
+CREATE TABLE employee_projects (
+    project_id INT AUTO_INCREMENT PRIMARY KEY,
+    project_name VARCHAR(100) NOT NULL,
+    employee_id INT,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+In this table:
+
+project_id is the primary key.
+project_name is marked as NOT NULL.
+employee_id is a foreign key referencing the employee_id in the employees table.
+Now, you have three tables with different key constraints:
+
+employees with a PRIMARY KEY, NOT NULL, UNIQUE, and DEFAULT constraint.
+departments with a PRIMARY KEY and NOT NULL constraint.
+employee_projects with a PRIMARY KEY and a FOREIGN KEY constraint.
+
+
+                                             
+
+
+
+
+
+
+
+
+                                                 VIEWS
+
+
+
+Sure, let's create a view from a single table and then apply various SQL commands on it. We'll use a simple example with a table called `students`. 
+
+Here's the SQL code to create a sample `students` table:
+
+```sql
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    age INT,
+    grade CHAR(1)
+);
+
+-- Insert some sample data into the students table
+INSERT INTO students (student_id, first_name, last_name, age, grade)
+VALUES
+    (1, 'John', 'Doe', 20, 'A'),
+    (2, 'Jane', 'Smith', 19, 'B'),
+    (3, 'Bob', 'Johnson', 22, 'C'),
+    (4, 'Alice', 'Williams', 21, 'A'),
+    (5, 'Charlie', 'Brown', 20, 'B');
+```
+
+
+
+This query will return only the selected columns from the view.
+
+
+To create a view that displays the names and ages of students from the `students` table, you can use the following SQL query:
+
+```sql
+CREATE VIEW name_and_age AS
+SELECT first_name, last_name, age
+FROM students;
+```
+
+In this SQL code:
+
+- We create a view called `name_and_age`.
+- The `SELECT` statement within the view selects the `first_name`, `last_name`, and `age` columns from the `students` table.
+
+Now, you can query the `name_and_age` view to display the names and ages of the students:
+
+```sql
+SELECT * FROM name_and_age;
+```
+
+This query will retrieve and display the first names, last names, and ages of all the students stored in the `students` table through the `name_and_age` view.
+
+
+
+
+
+
+
+
+Now, let's create a view called `high_achievers` that selects students who have a grade of 'A':
+
+```sql
+CREATE VIEW high_achievers AS
+SELECT student_id, first_name, last_name
+FROM students
+WHERE grade = 'A';
+```
+
+With the `high_achievers` view created, you can perform various SQL commands on it:
+
+1. **Selecting Data from the View:**
+
+```sql
+SELECT * FROM high_achievers;
+```
+
+This will select all the high achievers (students with a grade of 'A') from the view.
+
+2. **Updating Data through the View (if updatable):**
+
+Suppose the grading system changes, and you want to update a student's grade through the view:
+
+```sql
+UPDATE high_achievers
+SET grade = 'B'
+WHERE student_id = 1;
+```
+
+This will update the grade of John Doe to 'B' through the `high_achievers` view.
+
+3. **Inserting Data through the View (if updatable):**
+
+You can also insert data through the view, assuming it's an updatable view. For example:
+
+```sql
+INSERT INTO high_achievers (student_id, first_name, last_name, grade)
+VALUES (6, 'Eva', 'Davis', 'A');
+```
+
+This will insert a new high-achieving student through the `high_achievers` view.
+
+4. **Deleting Data through the View (if updatable):**
+
+To delete a student from the high achievers list:
+
+```sql
+DELETE FROM high_achievers
+WHERE student_id = 4;
+```
+
+This will remove Alice Williams from the high achievers list through the `high_achievers` view.
+
+Keep in mind that whether or not you can update or insert data through a view depends on the complexity of the underlying query and the permissions granted to the user. Simple views with straightforward SELECT statements are typically updatable, but more complex views may have limitations. Additionally, permissions need to be set up appropriately to allow such operations.
+
+To display the data from a view in SQL, you can simply use a `SELECT` statement just like you would for a regular table. Here's the query to display the data from the `high_achievers` view:
+
+```sql
+SELECT * FROM high_achievers;
+```
+
+When you execute this query, it will retrieve and display the data stored in the `high_achievers` view, which, in our previous example, includes the student_id, first_name, and last_name of students with a grade of 'A'.
+
+You can use other `SELECT` clauses and conditions to further customize the query based on your specific needs. For example, if you want to display only the first names and last names of high-achieving students, you can do this:
+
+```sql
+SELECT first_name, last_name FROM high_achievers;
+```
+
+
+
+
+
+                           COMPLEX VIEW
+
+CREATE VIEW DetailsView AS
+SELECT NAME, ADDRESS
+FROM StudentDetails
+/
+/
+/
+CREATE VIEW DetailsView AS
+SELECT NAME, ADDRESS
+FROM StudentDetails
+WHERE S_ID < 5;
+/
+/
+/
+CREATE VIEW MarksView AS
+SELECT StudentDetails.NAME, StudentDetails.ADDRESS, StudentMarks.MARKS
+FROM StudentDetails, StudentMarks
+WHERE StudentDetails.NAME = StudentMarks.NAME;
+/
+/
+/
+LISTING ALL VIEWS IN A DATABASE
+use "database_name";
+show full tables where table_type like "%VIEW";
